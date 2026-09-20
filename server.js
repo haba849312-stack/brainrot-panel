@@ -8,7 +8,7 @@ app.use(express.json({ limit: '4mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/favicon.ico', (_req, res) => res.status(204).end());
 const API_KEY   = process.env.API_KEY   || 'kidcrasher2026';
-const ADMIN_KEY = process.env.ADMIN_KEY || 'JohnPorkUncle';
+const ADMIN_KEY = process.env.ADMIN_KEY || 'JamesBondUncle67';
 const PORT      = process.env.PORT      || 3000;
 const OFFLINE_MS = 60 * 1000;
 
